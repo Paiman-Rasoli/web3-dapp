@@ -1,5 +1,5 @@
 const Tether = artifacts.require("Tether");
 
-module.exports = function (deployer) {
-  deployer.deploy(Tether, 1111);
+module.exports = async function (deployer) {
+  await deployer.deploy(Tether);
 };
