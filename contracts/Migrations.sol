@@ -6,7 +6,7 @@ contract Migrations {
  address public owner;
  uint public last_completed_migration;
 
- constructor () public {
+ constructor () {
     owner = msg.sender;
  }
 
@@ -15,13 +15,13 @@ contract Migrations {
   _;
  }
 
- function set_completed(uint completed) public onlyOwner {
+ function setCompleted(uint completed) public onlyOwner {
   last_completed_migration = completed;
  }
 
  function upgrade(address new_address) public onlyOwner {
-  Migrations upgrade = Migrations(new_address);
-  upgrade.set_completed(last_completed_migration);
+  Migrations upgradeInstance = Migrations(new_address);
+  upgradeInstance.setCompleted(last_completed_migration);
  }
 
 }
