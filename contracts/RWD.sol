@@ -3,10 +3,10 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "truffle/Console.sol";
 
-contract Tether {
-      string public name = "Tether";
-      string public symbole = "mUSDT";
-      uint256 public  totalSupply = 1000000000000000000; // 1 million token
+contract RWD {
+      string public name = "Rewad Token";
+      string public symbole = "RWD";
+      uint256 public totalSupply = 1000000000000000000; // 1 million token
       uint256 public decimals = 18;
 
       event Transfer(
@@ -30,7 +30,7 @@ contract Tether {
       }
 
       function transfer(address _to ,uint256 _value) public returns (bool success) {
-            require(balanceOf[msg.sender] >= _value ,"Error while transfering");
+            require(balanceOf[msg.sender] >= _value , "The value is larger than balance");
 
             balanceOf[msg.sender] -= _value;
             balanceOf[_to] += _value;
