@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0; 
 
-import "truffle/Console.sol";
-
 contract RWD {
-      string public name = "Rewad Token";
+      string public name = "Reward Token";
       string public symbole = "RWD";
       uint256 public totalSupply = 1000000000000000000000000; // 1 million token
       uint256 public decimals = 18;
