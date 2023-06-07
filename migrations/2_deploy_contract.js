@@ -12,20 +12,9 @@ module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(DecentralBank, rwd.address, tether.address);
   const decenteredBank = await DecentralBank.deployed();
 
-  // Transfer all RWD tokens to decentered bank
-  try {
-    await rwd.transfer(decenteredBank.address, "10000000000000000000"); // 1million
-  } catch (err) {
-    console.log(err, "x😀😀");
-  }
-
-  try {
-    // distribute 100 Tether tokens to investor
-    // pretend investor the second address from Ganache
-    // 100 tether
-    await tether.transfer(accounts[1], "1000000000000000000");
-  } catch (err) {
-    console.log(err, "Y😀😀");
-  }
+  await rwd.transfer(decenteredBank.address, "1000000000000000000"); // 1million
+  // distribute 100 Tether tokens to investor
+  // pretend investor the second address from Ganache
+  // 100 tether
+  await tether.transfer(accounts[1], "1000000000000000000");
 };
-//  1ETH = 1 * 10 ^ 18 WEI
