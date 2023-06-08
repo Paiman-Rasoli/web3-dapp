@@ -21,7 +21,8 @@ contract DecentralBank {
       owner = msg.sender;
  }
 
- // staking function
+ // staking tokens
+ 
  function depositTokens(uint _amount) public {
      require(_amount > 0, "Ammount can not be 0");
 
@@ -37,6 +38,19 @@ contract DecentralBank {
      //update stacking
      isStaking[msg.sender] = true;
      hasStacked[msg.sender] = true;
+ }
+
+// unstacking tokens
+
+function unstackeToken() public {
+    uint balance = stackingBalance[msg.sender];
+    require(balance > 0, "staking balance can not be less than zero");
+
+    // transfer the token to specified contract from our bank;
+
+    tether.transfer(msg.sender , balance);
+    stackingBalance[msg.sender] = 0;
+    isStaking[msg.sender] = false;
  }
 
  modifier onlyOwner() {
@@ -58,5 +72,4 @@ contract DecentralBank {
         }
      }
   }
-
 }

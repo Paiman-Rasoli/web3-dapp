@@ -42,7 +42,7 @@ contract Tether {
             return true;
       }
 
-       function transferFrom(address _from ,address _to ,uint256 _value) public returns (bool success) {
+      function transferFrom(address _from ,address _to ,uint256 _value) public returns (bool success) {
             require(_value <= balanceOf[_from] , "From param is insuffecient.");
             require(_value <= allowance[_from][msg.sender] , "Need approval for this transaction");
 
@@ -58,8 +58,3 @@ contract Tether {
       }
 
 }
-
-/**
-Notes:
-  1ETH = 1 * 10 ^ 18 WEI
- */
