@@ -50,14 +50,13 @@ contract DecentralBank {
      for (uint256 index = 0; index < size; index++) {
 
          address recipient = stackers[index];
-         uint balance = stackingBalance[recipient] / 9;
+         uint balance = stackingBalance[recipient];
          if(balance > 0) {
            // reward for each recipient according to thier stacked balance.
            // if stacked 20 token / 9 =  2.2 reward token
-           rwd.transfer(recipient , balance);
+           rwd.transfer(recipient , balance / 9);
         }
      }
   }
-
 
 }
