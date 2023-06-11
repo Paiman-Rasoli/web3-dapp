@@ -1,11 +1,18 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { loadWeb3, requestWalletAndGetDefaultWallet } from "./utils";
+import { MetaTether } from "./types";
+import {
+  loadTetherContractMeta,
+  loadWeb3,
+  requestWalletAndGetDefaultWallet,
+} from "./utils";
 import { useState, useEffect } from "react";
 
 function App() {
-  const [mounted, setMounted] = useState(false);
-  const [accountAddress, setAccountAddress] = useState("");
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [accountAddress, setAccountAddress] = useState<string>("");
+  // contracts
+  const [tether, setTether] = useState<MetaTether>({});
 
   if (!mounted) {
     (async () => {
@@ -15,9 +22,19 @@ function App() {
 
   useEffect(() => {
     setMounted(true);
-    requestWalletAndGetDefaultWallet().then((res) =>
-      setAccountAddress(res[0] ?? "")
-    );
+    requestWalletAndGetDefaultWallet().then((res) => {
+      const isAccountAvailable = res[0] ? true : false;
+
+      if (isAccountAvailable) {
+        setAccountAddress(res[0]);
+        loadTetherContractMeta(res[0]).then((tetherResult) => {
+          if (tetherResult) {
+            console.log(tetherResult);
+            setTether(tetherResult);
+          }
+        });
+      }
+    });
   }, []);
 
   return (
