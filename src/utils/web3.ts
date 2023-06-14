@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { WALLET_CONNECTION_APPROVED } from "../constants";
-import { MetaTether } from "../types";
+import { MetaDecentralBank, MetaRWD, MetaTether } from "../types";
 
 declare global {
   interface Window {
@@ -41,7 +41,7 @@ export const requestWalletAndGetDefaultWallet = async (): Promise<string[]> => {
 
 export const loadTetherContractMeta = async (
   account: string
-): Promise<MetaTether | null> => {
+): Promise<MetaTether> => {
   const web3 = window.web3;
   const networkId = await web3.eth.net.getId();
 
@@ -58,5 +58,66 @@ export const loadTetherContractMeta = async (
   }
 
   alert("There is no network!");
-  return null;
+  return {};
+};
+
+export const loadRwdContractMeta = async (
+  account: string
+): Promise<MetaRWD> => {
+  const web3 = window.web3;
+  const networkId = await web3.eth.net.getId();
+
+  const RWD = await import("../abis/RWD.json");
+  const RWDData = RWD.networks[networkId as 5777];
+  if (RWDData) {
+    const rwd = new web3.eth.Contract(RWD.abi as any, RWDData.address);
+    const balance = await rwd.methods.balanceOf(account).call();
+
+    return {
+      RWD: rwd,
+      balance: web3.utils.fromWei(balance, "tether").toString(),
+    };
+  }
+
+  alert("There is no network!");
+  return {};
+};
+
+export const loadDecentralBankContractMeta = async (
+  account: string
+): Promise<MetaDecentralBank> => {
+  const web3 = window.web3;
+  const networkId = await web3.eth.net.getId();
+
+  const DecentralBank = await import("../abis/DecentralBank.json");
+  const decentralBankData = DecentralBank.networks[networkId as 5777];
+  if (decentralBankData) {
+    const decentralBank = new web3.eth.Contract(
+      DecentralBank.abi as any,
+      decentralBankData.address
+    );
+    const stackingBalance = await decentralBank.methods
+      .stackingBalance(account)
+      .call();
+
+    return {
+      decentralBank: decentralBank,
+      balance: web3.utils.fromWei(stackingBalance, "tether").toString(),
+    };
+  }
+
+  alert("There is no network!");
+  return {};
+};
+
+export const loadAllContracts = async (
+  account: string
+): Promise<[MetaTether, MetaRWD, MetaDecentralBank]> => {
+  const contractsMeta = await Promise.all([
+    loadTetherContractMeta(account).then((res) => res),
+    loadRwdContractMeta(account).then((res) => res),
+    loadDecentralBankContractMeta(account).then((res) => res),
+  ]);
+
+  return contractsMeta;
 };

@@ -1,8 +1,8 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import { MetaTether } from "./types";
+import { MetaDecentralBank, MetaRWD, MetaTether } from "./types";
 import {
-  loadTetherContractMeta,
+  loadAllContracts,
   loadWeb3,
   requestWalletAndGetDefaultWallet,
 } from "./utils";
@@ -13,6 +13,8 @@ function App() {
   const [accountAddress, setAccountAddress] = useState<string>("");
   // contracts
   const [tether, setTether] = useState<MetaTether>({});
+  const [rwd, setRwd] = useState<MetaRWD>({});
+  const [decentralBank, setDecentralBank] = useState<MetaDecentralBank>({});
 
   if (!mounted) {
     (async () => {
@@ -20,21 +22,25 @@ function App() {
     })();
   }
 
+  const init = async () => {
+    const userAccount = await requestWalletAndGetDefaultWallet();
+    const isAccountAvailable = userAccount[0] ? true : false;
+
+    if (isAccountAvailable) {
+      setAccountAddress(userAccount[0]);
+
+      const [tetherContract, rwdContract, decentralBankContract] =
+        await loadAllContracts(userAccount[0]);
+
+      setTether(tetherContract);
+      setRwd(rwdContract);
+      setDecentralBank(decentralBankContract);
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
-    requestWalletAndGetDefaultWallet().then((res) => {
-      const isAccountAvailable = res[0] ? true : false;
-
-      if (isAccountAvailable) {
-        setAccountAddress(res[0]);
-        loadTetherContractMeta(res[0]).then((tetherResult) => {
-          if (tetherResult) {
-            console.log(tetherResult);
-            setTether(tetherResult);
-          }
-        });
-      }
-    });
+    init();
   }, []);
 
   return (
