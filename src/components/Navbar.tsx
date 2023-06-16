@@ -2,9 +2,10 @@ import { CSSProperties } from "react";
 
 interface NavbarProps {
   accountAddress: string;
+  init: () => void;
 }
 
-function Navbar({ accountAddress }: NavbarProps) {
+function Navbar({ accountAddress, init }: NavbarProps) {
   return (
     <nav
       className="navbar navbar-dark fixed-top shadow p-2"
@@ -15,16 +16,20 @@ function Navbar({ accountAddress }: NavbarProps) {
           <a className="navbar-brand">DAPP Yield Stacking</a>
         </div>
         <div>
-          <a className="text-white">
-            {accountAddress
-              ? accountAddress?.slice(0, 6) +
+          {!accountAddress ? (
+            <button className="btn text-white border-white" onClick={init}>
+              Connect to MetaMask
+            </button>
+          ) : (
+            <a className="text-white">
+              {accountAddress?.slice(0, 6) +
                 "... " +
                 accountAddress?.slice(
                   accountAddress.length - 3,
                   accountAddress.length - 1
-                )
-              : "Account"}
-          </a>
+                )}
+            </a>
+          )}
         </div>
       </div>
     </nav>
