@@ -46,7 +46,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar accountAddress={accountAddress} />
+      <Navbar accountAddress={accountAddress} init={init} />
       <div className="container-fluid mt-5">
         <div className="row">
           <main
