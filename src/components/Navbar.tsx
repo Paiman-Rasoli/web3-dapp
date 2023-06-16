@@ -1,4 +1,4 @@
-import CSS from "csstype";
+import { CSSProperties } from "react";
 
 interface NavbarProps {
   accountAddress: string;
@@ -7,7 +7,7 @@ interface NavbarProps {
 function Navbar({ accountAddress }: NavbarProps) {
   return (
     <nav
-      className="navbar navbar-dark fixed-top shadow p-0"
+      className="navbar navbar-dark fixed-top shadow p-2"
       style={styles.navBar}
     >
       <div className="container-fluid">
@@ -34,7 +34,7 @@ function Navbar({ accountAddress }: NavbarProps) {
 export default Navbar;
 
 interface StyleProps {
-  navBar: CSS.Properties;
+  navBar: CSSProperties;
 }
 
 const styles: StyleProps = {

@@ -12,7 +12,7 @@ function Main() {
   }, []);
 
   return (
-    <div>
+    <div id="content" className="mt-3">
       <div>
         <ul className="nav nav-tabs">
           <li className="nav-item">
@@ -48,7 +48,7 @@ function Main() {
             aria-describedby="basic-addon2"
           />
           <span className="input-group-text" id="basic-addon2">
-            <img src="/tether.jpg" height={32} />
+            <img src="/tether.jpg" height={32} alt="tether.jpg" />
             &nbsp;&nbsp; USDT
           </span>
         </div>

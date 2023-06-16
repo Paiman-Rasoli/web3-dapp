@@ -70,7 +70,7 @@ interface Styles {
 
 const styles: Styles = {
   container: {
-    maxWidth: "600px",
+    maxWidth: "650px",
     minHeight: "100vm",
   },
 };
