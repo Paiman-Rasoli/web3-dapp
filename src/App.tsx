@@ -1,4 +1,5 @@
 import "./App.css";
+import Main from "./components/Main";
 import Navbar from "./components/Navbar";
 import { MetaDecentralBank, MetaRWD, MetaTether } from "./types";
 import {
@@ -6,7 +7,7 @@ import {
   loadWeb3,
   requestWalletAndGetDefaultWallet,
 } from "./utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, CSSProperties } from "react";
 
 function App() {
   const [mounted, setMounted] = useState<boolean>(false);
@@ -44,10 +45,32 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="app">
       <Navbar accountAddress={accountAddress} />
+      <div className="container-fluid mt-5">
+        <div className="row">
+          <main
+            role="main"
+            className="col col-lg-12 mx-auto"
+            style={styles.container}
+          >
+            <Main />
+          </main>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default App;
+
+interface Styles {
+  container: CSSProperties;
+}
+
+const styles: Styles = {
+  container: {
+    maxWidth: "600px",
+    minHeight: "100vm",
+  },
+};
