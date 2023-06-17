@@ -57,8 +57,7 @@ export const loadTetherContractMeta = async (
     };
   }
 
-  alert("There is no network!");
-  return {};
+  throw new Error("Network Error", { cause: "Tether Contract" });
 };
 
 export const loadRwdContractMeta = async (
@@ -79,8 +78,7 @@ export const loadRwdContractMeta = async (
     };
   }
 
-  alert("There is no network!");
-  return {};
+  throw new Error("Network Error", { cause: "Rwd Contract" });
 };
 
 export const loadDecentralBankContractMeta = async (
@@ -106,8 +104,7 @@ export const loadDecentralBankContractMeta = async (
     };
   }
 
-  alert("There is no network!");
-  return {};
+  throw new Error("Network Error", { cause: "Decentral Bank" });
 };
 
 export const loadAllContracts = async (
