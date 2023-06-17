@@ -1,7 +1,7 @@
 import "./App.css";
 import Main from "./components/Main";
 import Navbar from "./components/Navbar";
-import { MetaDecentralBank, MetaRWD, MetaTether } from "./types";
+import { MetaDecentralBank, MetaRWD, MetaTether, Errors } from "./types";
 import {
   loadAllContracts,
   loadWeb3,
@@ -16,6 +16,8 @@ function App() {
   const [tether, setTether] = useState<MetaTether>({});
   const [rwd, setRwd] = useState<MetaRWD>({});
   const [decentralBank, setDecentralBank] = useState<MetaDecentralBank>({});
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Errors>(Errors.NULL);
 
   if (!mounted) {
     (async () => {
@@ -24,18 +26,29 @@ function App() {
   }
 
   const init = async () => {
+    setLoading(true);
     const userAccount = await requestWalletAndGetDefaultWallet();
     const isAccountAvailable = userAccount[0] ? true : false;
 
     if (isAccountAvailable) {
       setAccountAddress(userAccount[0]);
 
-      const [tetherContract, rwdContract, decentralBankContract] =
-        await loadAllContracts(userAccount[0]);
+      try {
+        const [tetherContract, rwdContract, decentralBankContract] =
+          await loadAllContracts(userAccount[0]);
 
-      setTether(tetherContract);
-      setRwd(rwdContract);
-      setDecentralBank(decentralBankContract);
+        setTether(tetherContract);
+        setRwd(rwdContract);
+        setDecentralBank(decentralBankContract);
+        setLoading(false);
+        setError(Errors.NULL);
+      } catch (err) {
+        console.error(err);
+        setError(Errors.SERVER_ERROR);
+      }
+    } else {
+      setLoading(false);
+      setError(Errors.WALLET_CONNECTION);
     }
   };
 
@@ -54,7 +67,11 @@ function App() {
             className="col col-lg-12 mx-auto"
             style={styles.container}
           >
-            <Main />
+            {loading ? (
+              <img src="/svg/loading.svg" alt="loading" />
+            ) : (
+              <Main error={error} />
+            )}
           </main>
         </div>
       </div>

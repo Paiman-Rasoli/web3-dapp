@@ -14,3 +14,9 @@ export interface MetaDecentralBank {
   decentralBank?: Contract;
   balance?: string;
 }
+
+export enum Errors {
+  NULL = "NULL",
+  WALLET_CONNECTION = "WALLET_CONNECTION",
+  SERVER_ERROR = "SERVER_ERROR",
+}
